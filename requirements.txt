@@ -1,9 +1,9 @@
-tensorflow
-pandas 
-numpy 
+tensorflow==2.12.1
+pandas
+numpy
 scikit-learn
 tensorboard
 matplotlib
 streamlit
 scikeras
-ipkerne
+ipykernel
