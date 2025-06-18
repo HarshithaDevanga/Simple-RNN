@@ -34,17 +34,16 @@ st.write('Enter a movie review to classify it as positive or negative.')
 # User input
 user_input = st.text_area('Movie Review')
 
+# Replace the classification button section with:
 if st.button('Classify'):
-
-    preprocessed_input=preprocess_text(user_input)
-
-    ## MAke prediction
-    prediction=model.predict(preprocessed_input)
-    sentiment='Positive' if prediction[0][0] > 0.5 else 'Negative'
-
-    # Display the result
-    st.write(f'Sentiment: {sentiment}')
-    st.write(f'Prediction Score: {prediction[0][0]}')
-else:
-    st.write('Please enter a movie review.')
-
+    sentiment, score = predict_sentiment(user_input)
+    
+    # Display with color coding
+    if sentiment == 'Positive':
+        st.success(f'Sentiment: {sentiment}')
+    else:
+        st.error(f'Sentiment: {sentiment}')
+    
+    # Visualize score on -1 to 1 scale
+    st.write(f'Prediction Score: {score:.4f}')
+    st.progress((score + 1) / 2)  # Convert -1:1 to 0:1 for progress bar
