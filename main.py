@@ -18,8 +18,13 @@ def preprocess_text(text):
 def predict_sentiment(review):
     processed = preprocess_text(review)
     prob = model.predict(processed)[0][0]
-    sentiment = "Positive" if prob >= 0.5 else "Negative"
-    return sentiment, prob
+
+    # Rescale from [0, 1] to [-1, 1]
+    rescaled_score = (prob * 2) - 1
+
+    # Determine sentiment based on rescaled score
+    sentiment = "Positive" if rescaled_score > 0 else "Negative"
+    return sentiment, rescaled_score
 
 # ---- Streamlit App ----
 st.title("IMDB Movie Review Sentiment Analysis")
@@ -30,4 +35,4 @@ user_input = st.text_area("Movie Review")
 if st.button("Classify"):
     sentiment, score = predict_sentiment(user_input)
     st.write(f"**Sentiment:** {sentiment}")
-    st.write(f"**Score:** {score:.4f}")
+    st.write(f"**Score (scaled [-1 to 1]):** {score:.4f}")
